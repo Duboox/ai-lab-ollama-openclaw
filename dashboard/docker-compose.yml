@@ -1,0 +1,9 @@
+services:
+  dashboard:
+    image: nginx:alpine
+    container_name: macmini_dashboard
+    ports:
+      - "80:80" # Este toma el dominio root
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html:ro
+    restart: always
