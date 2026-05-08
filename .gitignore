@@ -1,5 +1,13 @@
-.env
 ./data/*
 
 ./**/*.DS_Store
 .DS_Store
+
+# Ignorar archivos de ambiente con datos reales
+*.env
+compose.env
+
+# Ignorar carpetas de datos locales (si las mapeas relativo)
+**/mongo-data/
+**/keys/
+**/backups/
