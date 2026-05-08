@@ -46,3 +46,16 @@ services:
         limits:
           memory: 2G
           cpus: '2.0'
+  nginx:
+    image: nginx:alpine
+    container_name: openclaw_proxy
+    networks:
+      - ai_network
+    ports:
+      - "443:443" # Este Nginx es el dueño absoluto del tráfico HTTPS
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./certs:/etc/nginx/certs:ro # La carpeta de los certificados SSL
+    depends_on:
+      - openclaw
+    restart: always

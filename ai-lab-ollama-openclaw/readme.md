@@ -1,0 +1,2 @@
+para resolver problema de: "origin not allowed (open the Control UI from the gateway host or allow it in gateway.controlUi.allowedOrigins)"
+-> docker exec openclaw node dist/index.js config set --batch-json '[{"path":"gateway.controlUi.allowedOrigins","value":["http://localhost:18789","http://127.0.0.1:18789","http://macmini-lab.local:18789","http://192.168.0.200:18789"]}]'
