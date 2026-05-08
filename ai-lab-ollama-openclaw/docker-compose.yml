@@ -24,7 +24,7 @@ services:
 
   # --- Agente Autónomo (OpenClaw) ---
   openclaw:
-    image: openclaw/openclaw:latest
+    image: ghcr.io/openclaw/openclaw:latest # <-- IMAGEN CORREGIDA (GHCR)
     container_name: openclaw
     networks:
       - ai_network
@@ -33,12 +33,16 @@ services:
     restart: always
     shm_size: '2gb' # Crítico para evitar crasheos de Chromium
     volumes:
-      - ./data/openclaw:/data
+      # Según los docs, OpenClaw guarda su data en /home/node/.openclaw
+      - ./data/openclaw-config:/home/node/.openclaw 
+      - ./data/openclaw-workspace:/home/node/.openclaw/workspace
       - /dev/shm:/dev/shm
     environment:
       - OLLAMA_BASE_URL=http://ollama:11434
       - LLM_PROVIDER=ollama
       - LLM_MODEL=llama3.2:1b
+      # Variable clave según los docs para que la UI funcione en LAN
+      - OPENCLAW_GATEWAY_BIND=lan 
     deploy:
       resources:
         limits:
