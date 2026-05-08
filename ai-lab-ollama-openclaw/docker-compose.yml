@@ -65,3 +65,22 @@ services:
     depends_on:
       - openclaw
     restart: always
+  ollama-setup:
+    image: ollama/ollama:latest
+    container_name: ollama_setup
+    depends_on:
+      - ollama
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+    restart: "no" # Queremos que muera elegantemente cuando termine, no que reviva
+    command: >
+      sh -c "
+      echo 'Esperando a que el servidor de Ollama arranque...';
+      sleep 5;
+      while ! ollama list > /dev/null 2>&1; do sleep 2; done;
+      echo 'Ollama en línea. Construyendo el modelo Lite (num_ctx 2048)...';
+      echo 'FROM llama3.2:1b' > /tmp/Modelfile;
+      echo 'PARAMETER num_ctx 2048' >> /tmp/Modelfile;
+      ollama create llama3.2:lite -f /tmp/Modelfile;
+      echo '¡Lobotomía táctica completada! Modelo llama3.2:lite listo en memoria.';
+      "
