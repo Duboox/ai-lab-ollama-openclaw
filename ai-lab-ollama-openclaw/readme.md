@@ -20,8 +20,23 @@ Para bajar llama 3.2:1b
 
 
 
-error en openclaw de ollama:
+error en openclaw de ollama (no me funciono los comandos):
 Unknown model: ollama/llama3.2:1b. Ollama requires authentication to be registered as a provider. Set OLLAMA_API_KEY
 -> docker exec openclaw sh -c "echo 'OLLAMA_API_KEY=macmini_dummy_key' >> /home/node/.openclaw/.env"
 -> docker exec openclaw node dist/index.js config set providers.ollama.apiKey "macmini_dummy_key"
 -> docker restart openclaw
+-> docker exec -it openclaw node dist/index.js configure
+El base url debe ser: http://ollama:11434
+
+
+Para probar ollama:
+docker exec -it ollama ollama run llama3.2:1b "Hola, ¿estás funcionando correctamente?"
+
+
+Para automentar timeout de ollama/openclaw:
+docker exec openclaw node dist/index.js config set "agents.defaults.timeouts.idle" "300s"
+docker exec openclaw node dist/index.js config set "agents.defaults.timeouts.total" "600s"
+
+
+Para un warning que da en los logs:
+docker exec openclaw node dist/index.js config set "gateway.trustedProxies" '["172.20.0.0/16"]'
