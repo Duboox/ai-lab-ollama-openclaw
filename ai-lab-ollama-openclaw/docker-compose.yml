@@ -14,13 +14,14 @@ services:
     restart: always
     environment:
       - OLLAMA_KEEP_ALIVE=5m
+      # - OLLAMA_KEEP_ALIVE=-1 Obliga a que viva en la ram
       - OLLAMA_NUM_PARALLEL=1
       - OLLAMA_MAX_LOADED_MODELS=1
     deploy:
       resources:
         limits:
-          memory: 3G
-          cpus: '1.0'
+          memory: 4G
+          cpus: '1.5'
 
   # --- Agente Autónomo (OpenClaw) ---
   openclaw:
@@ -43,6 +44,9 @@ services:
       - LLM_PROVIDER=ollama
       - LLM_MODEL=llama3.2:1b
       - OPENCLAW_GATEWAY_BIND=lan 
+      - LLM_IDLE_TIMEOUT_MS=600000
+      - OPENCLAW_LLM_IDLE_TIMEOUT=600000
+      - OLLAMA_TIMEOUT=600000
     deploy:
       resources:
         limits:
